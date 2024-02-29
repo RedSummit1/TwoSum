@@ -18,32 +18,7 @@
 
 void _Menu(int* p_num);
 
-
-void PopulateFile(){
-	
-	int trials;
-	unsigned int hlength; 
-
-	_Menu(&trials);
-	FILE* wfile = fopen("x","w");
-
-	if (wfile == NULL){
-		printf("File not detected, aborting program\n");
-		exit(1);
-	}
-
-	for(int i = 0; i < trials; ++i){
-		hlength = (random() % 401) + 100; // length can be between 100 and 500
-		for(int j = 0; j < hlength - 1; ++j){
-			fprintf(wfile,"%ld,",random()%10001);		
-		}
-		fprintf(wfile,"%ld\n",random()%10001);		
-	}
-	printf("Done nig");
-
-
-
-}
+void PopulateFile();
 
 
 
@@ -89,5 +64,26 @@ void _Menu(int* p_num){
 }
 
 
+void PopulateFile(){
+	
+	int trials;
+	unsigned int hlength; 
+
+	_Menu(&trials);
+	FILE* wfile = fopen("x","w");
+
+	if (wfile == NULL){
+		printf("File not detected, aborting program\n");
+		exit(1);
+	}
+
+	for(int i = 0; i < trials; ++i){
+		hlength = ((random() % 401) + 100); // length can be between 100 and 500
+		for(int j = 0; j < hlength - 1; ++j){
+			fprintf(wfile,"%ld,",random()%10001);		
+		}
+		fprintf(wfile,"%ld\n",random()%10001);		
+	}
+}
 
 
