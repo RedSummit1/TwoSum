@@ -20,15 +20,18 @@ void _Menu(int* p_num);
 
 void PopulateFile();
 
+void _FilePipe(){
+	
 
 
+}
 
 
 int main(){
 
-	char line[10]; // Take in 
-
+	char line[] = "This is the way that you can do it"; // Take in 
 	PopulateFile();
+
 
 
 	//Variable to store line string
@@ -49,9 +52,6 @@ int main(){
 //		printf("%ld\n",random()%100);
 //	}
 //
-
-	
-
 	return 0;
 }
 
@@ -84,6 +84,7 @@ void PopulateFile(){
 		}
 		fprintf(wfile,"%ld\n",random()%10001);		
 	}
+	pclose(wfile);
 }
 
 
