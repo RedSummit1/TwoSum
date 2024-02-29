@@ -9,9 +9,6 @@
  *
  */
 
-
-
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -20,19 +17,79 @@ void _Menu(int* p_num);
 
 void PopulateFile();
 
-void _FilePipe(){
-	
+int _CountTotalCharaters(FILE* rfile);
 
+char* _LineFeed(){
+	FILE* rfile = fopen("x","r");
+	int sizeofLine;
+
+	if (!rfile){
+		printf("File not detected, aborting program\n");
+		exit(1);
+	}
+	//Represents each line, will put in a for loop
+	
+	//sizeofLine = _CountTotalCharaters(rfile);
+	//printf("The amount of characters in this line is %d\n",sizeofLine);
+
+	char* line = malloc(sizeofLine); //Cannot use char* line[sizeofLine], stores values in static memory which is freed once the function ends
+									 //To have continued access to memory after function invocation use malloc to use dynamically sourced memory
+
+	if (line == NULL){
+		printf("Error");
+		exit(1);	
+	}
+
+	fgets(line,sizeofLine,rfile);
+	printf("The values in the line are ---> %s",line);
+	return line;
+
+}
+
+int _TwoSum(char* test,int size){
+	int arr[size];
+	int i = 0;
+	int length = 0;
+	char* parsed_str;
+
+	printf("We in here\n");
+	parsed_str = strtok(test,",");
+	while(parsed_str != '\0'){
+		arr[i] = atoi(parsed_str);
+		parsed_str = strtok('\0',",");	
+		//printf("%ld\n",arr[i]);
+		i++;
+	}
+	length = i;
+	printf("Biggest index in array %d\n",i);
+	for(int a = 0; a < length; a++){
+			printf("Numbers: %ld\n",arr[a]);
+
+	}
+}
+
+void PerformTwoSum(){
+	FILE* rfile = fopen("x","r");
+	char* parsed_str1;
+	char* parsed_str2;
+
+	//char* line  = _LineFeed();
+	char* line = NULL;
+	size_t size = 0;
+		
+	while(getline(&line,&size,rfile) != -1){
+		_TwoSum(line,size);
+	}
 
 }
 
 
+
+
 int main(){
 
-	char line[] = "This is the way that you can do it"; // Take in 
 	PopulateFile();
-
-
+	PerformTwoSum();
 
 	//Variable to store line string
 //	int num;
@@ -60,7 +117,7 @@ void _Menu(int* p_num){
 	printf("Two Sum program\n");
 	printf("How many test do you want to perform: ");
 	scanf("%d",p_num);
-	printf("%d tests will be performed",*p_num);
+	printf("%d tests will be performed\n",*p_num);
 }
 
 
@@ -72,7 +129,7 @@ void PopulateFile(){
 	_Menu(&trials);
 	FILE* wfile = fopen("x","w");
 
-	if (wfile == NULL){
+	if (!wfile){
 		printf("File not detected, aborting program\n");
 		exit(1);
 	}
@@ -87,4 +144,13 @@ void PopulateFile(){
 	pclose(wfile);
 }
 
+int _CountTotalCharaters(FILE* rfile){
+	int c, count;
 
+	while( c != EOF && c != '\n' ){
+		c = fgetc(rfile);
+		count++;
+	}
+
+	return count;
+}
