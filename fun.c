@@ -13,7 +13,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void _Menu(int* p_num);
+void _Menu(unsigned int* p_num);
 
 void PopulateFile();
 
@@ -46,45 +46,48 @@ char* _LineFeed(){
 
 }
 
-int _TwoSum(char* test,int size){
+long int _TwoSum(char* test,int size){
 	int arr[size];
 	int i = 0;
 	int length = 0;
 	char* parsed_str;
+	long totalSum = 0;
 
-	printf("We in here\n");
 	parsed_str = strtok(test,",");
-	while(parsed_str != '\0'){
+	while(parsed_str != NULL){
 		arr[i] = atoi(parsed_str);
-		parsed_str = strtok('\0',",");	
+		parsed_str = strtok(NULL,",");	
 		//printf("%ld\n",arr[i]);
 		i++;
 	}
+
 	length = i;
-	printf("Biggest index in array %d\n",i);
-	for(int a = 0; a < length; a++){
-			printf("Numbers: %ld\n",arr[a]);
+	for(int a = 0; a < length; ++a){
+			//printf("Numbers: %d\n",arr[a]);
+		for(int j = 1 + a; j < length; ++j){
+			totalSum += arr[a] + arr[j];
+		}
 
 	}
+	return totalSum;
 }
 
 void PerformTwoSum(){
 	FILE* rfile = fopen("x","r");
 	char* parsed_str1;
 	char* parsed_str2;
+	int count = 1;
 
 	//char* line  = _LineFeed();
 	char* line = NULL;
 	size_t size = 0;
 		
 	while(getline(&line,&size,rfile) != -1){
-		_TwoSum(line,size);
+		printf("Line %d's total sum is %ld\n",count,_TwoSum(line,size));
+		count++;
 	}
 
 }
-
-
-
 
 int main(){
 
@@ -113,18 +116,17 @@ int main(){
 }
 
 
-void _Menu(int* p_num){
+void _Menu(unsigned int* p_num){
 	printf("Two Sum program\n");
 	printf("How many test do you want to perform: ");
 	scanf("%d",p_num);
-	printf("%d tests will be performed\n",*p_num);
+	printf("%d %s will be performed\n",*p_num,(*p_num > 1 ? "tests" :"test"));
 }
 
 
 void PopulateFile(){
 	
-	int trials;
-	unsigned int hlength; 
+	unsigned int trials, hlength;
 
 	_Menu(&trials);
 	FILE* wfile = fopen("x","w");
