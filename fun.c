@@ -8,10 +8,12 @@
  * 5) Output results to output file
  *
  */
+#define CLOCKS_PER_MICROSECOND (CLOCKS_PER_SEC / 1000000)
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 void _Menu(unsigned int* p_num);
 
@@ -46,12 +48,14 @@ char* _LineFeed(){
 
 }
 
-long int _TwoSum(char* test,int size){
+long int _TwoSum(char* test,int size,float* time){
 	int arr[size];
 	int i = 0;
 	int length = 0;
 	char* parsed_str;
 	long totalSum = 0;
+	time_t start,end;
+
 
 	parsed_str = strtok(test,",");
 	while(parsed_str != NULL){
@@ -62,6 +66,9 @@ long int _TwoSum(char* test,int size){
 	}
 
 	length = i;
+	
+
+	start = clock();
 	for(int a = 0; a < length; ++a){
 			//printf("Numbers: %d\n",arr[a]);
 		for(int j = 1 + a; j < length; ++j){
@@ -69,6 +76,9 @@ long int _TwoSum(char* test,int size){
 		}
 
 	}
+	end = clock();
+
+	*time = (float)(end - start)/CLOCKS_PER_MICROSECOND;
 	return totalSum;
 }
 
@@ -77,13 +87,15 @@ void PerformTwoSum(){
 	char* parsed_str1;
 	char* parsed_str2;
 	int count = 1;
+	float time = 0;
 
 	//char* line  = _LineFeed();
 	char* line = NULL;
 	size_t size = 0;
 		
 	while(getline(&line,&size,rfile) != -1){
-		printf("Line %d's total sum is %ld\n",count,_TwoSum(line,size));
+		printf("\nLine %d's total sum is %ld.\n",count,_TwoSum(line,size,&time));
+		printf("The value of time is %f microseconds.\n\n",time);
 		count++;
 	}
 
